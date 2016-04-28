@@ -7,14 +7,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.domain.model.Todo;
-import com.example.domain.repository.TodoRepository;
+import com.example.domain.repository.TodoRepository1;
 
 @Service
 @Transactional
-public class TodoService {
+public class TodoService1 {
 	
 	@Autowired
-	TodoRepository todoRepository;
+	TodoRepository1 todoRepository;
 	
 	
 	public void insert(Todo todo){

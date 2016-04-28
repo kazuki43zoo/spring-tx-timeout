@@ -1,7 +1,8 @@
 package com.example;
 
 import com.example.domain.model.Todo;
-import com.example.domain.service.TodoService;
+import com.example.domain.service.TodoService1;
+import com.example.domain.service.TodoServiceFacade1;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class SpringTxTimeoutApplication implements CommandLineRunner {
 	}
 
 	@Autowired
-	TodoService todoService;
+	TodoServiceFacade1 todoServiceFacade1;
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -28,27 +29,25 @@ public class SpringTxTimeoutApplication implements CommandLineRunner {
 		newTodo.setTitle("飲み会");
 		newTodo.setDetails("銀座 19:00");
 		// 新しいTodoをインサートする
-		todoService.insert(newTodo);
+		todoServiceFacade1.insert(newTodo);
 		// インサートしたTodoを取得して標準出力する
-		Todo loadedTodo = todoService.select(newTodo.getId());
-		System.out.println("ID       : " + loadedTodo.getId());
-		System.out.println("TITLE    : " + loadedTodo.getTitle());
-		System.out.println("DETAILS  : " + loadedTodo.getDetails());
-		System.out.println("FINISHED : " + loadedTodo.isFinished());
+		List<Todo> loadedTodo = todoServiceFacade1.select(newTodo.getId());
+		for (Todo todo : loadedTodo) {
+			System.out.println(todo);
+		}
 		newTodo = new Todo();
 		newTodo.setTitle("食事会");
 		newTodo.setDetails("新宿 20:00");
 		// 新しいTodoをインサートする
-		todoService.insert(newTodo);
+		todoServiceFacade1.insert(newTodo);
 		System.out.println("\nこれからの予定\n");
 		// 全件取得
-		List<Todo> loadedTodos = todoService.selectAll();
-		for (Todo todo : loadedTodos) {
-			System.out.println("ID       : " + todo.getId());
-			System.out.println("TITLE    : " + todo.getTitle());
-			System.out.println("DETAILS  : " + todo.getDetails());
-			System.out.println("FINISHED : " + todo.isFinished());
+		List<List<Todo>> loadedTodos = todoServiceFacade1.selectAll();
+		for (List<Todo> todos : loadedTodos) {
+			for (Todo todo : todos) {
+				System.out.println(todo);
+			}
 		}
-		System.exit(0);
+		// System.exit(0);
 	}
 }

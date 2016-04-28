@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.domain.model.Todo;
-import com.example.domain.service.TodoService;
+import com.example.domain.service.TodoService1;
 
 @RestController
 @RequestMapping("/todo")
 public class TodoController {
 
 	@Autowired
-	TodoService todoService;
+	TodoService1 todoService;
 
 	@ResponseStatus(code = HttpStatus.CREATED)
 	@RequestMapping(method = RequestMethod.POST)
