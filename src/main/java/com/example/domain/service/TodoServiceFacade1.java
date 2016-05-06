@@ -4,14 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionTimedOutException;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.domain.model.Todo;
 
 @Service
-@Transactional
+@PropertySource("classpath:/timeout.properties")
+@Transactional(timeout = 20)
 public class TodoServiceFacade1 {
+//	@Value("${serviceFacade1.timeout}")
+//	int time;
 
 	@Autowired
 	TodoService1 todoService1;
@@ -26,19 +32,11 @@ public class TodoServiceFacade1 {
 		todoService3.insert(todo);
 	}
 
-	public List<Todo> select(int id) {
-		ArrayList<Todo> list = new ArrayList<>();
-		list.add(todoService1.select(id));
-		list.add(todoService2.select(id));
-		list.add(todoService3.select(id));
-		return list;
-	}
-
 	public List<List<Todo>> selectAll() {
 		ArrayList<List<Todo>> list = new ArrayList<>();
 		list.add(todoService1.selectAll());
-		list.add(todoService2.selectAll());
-		list.add(todoService3.selectAll());
+		list.add(todoService2.selectAll().get(0));
+		list.add(todoService3.selectAll().get(0));
 		return list;
 	}
 }

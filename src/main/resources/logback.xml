@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender"> <!-- (1) -->
+        <encoder>
+            <pattern><![CDATA[date:%d{yyyy-MM-dd HH:mm:ss}\tthread:%thread\tX-Track:%X{X-Track}\tlevel:%-5level\tlogger:%-48logger{48}\tmessage:%msg%n]]></pattern> <!-- (2) -->
+        </encoder>
+    </appender>
+
+    <!-- Application Loggers -->
+    <logger name="example"> <!-- (9) -->
+        <level value="debug" />
+    </logger>
+
+    <root level="debug"> <!-- (11) -->
+        <appender-ref ref="STDOUT" /> <!-- (12) -->
+    </root>
+
+</configuration>

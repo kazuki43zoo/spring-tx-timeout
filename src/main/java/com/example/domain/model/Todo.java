@@ -45,9 +45,23 @@ public class Todo implements Serializable {
 		this.finished = finished;
 	}
 
+	public Todo() {
+	}
+
+	public Todo(String title, String details) {
+		this.title = title;
+		this.details = details;
+		this.finished = false;
+	}
+
+	public Todo(String title, String details, boolean finished) {
+		this.title = title;
+		this.details = details;
+		this.finished = finished;
+	}
+
 	@Override
 	public String toString() {
 		return id + title + details + finished;
 	}
-
 }

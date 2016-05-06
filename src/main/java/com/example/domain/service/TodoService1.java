@@ -12,20 +12,27 @@ import com.example.domain.repository.TodoRepository1;
 @Service
 @Transactional
 public class TodoService1 {
-	
+
 	@Autowired
 	TodoRepository1 todoRepository;
-	
-	
-	public void insert(Todo todo){
+
+	public void insert(Todo todo) {
 		todoRepository.insert(todo);
 	}
-	
-	public Todo select(int id){
-		return todoRepository.select(id);
-	}
-	
-	public List<Todo> selectAll(){
+
+	public List<Todo> selectAll() {
 		return todoRepository.selectAll();
+	}
+
+	public void update(Todo todo) {
+		for (int i = 0; i < Integer.MAX_VALUE; i++)
+			for (int j = 0; j < Integer.MAX_VALUE; j++)
+				todoRepository.update(todo);
+	}
+	@Transactional(timeout = 10)
+	public void insertList(List<Todo> todos) {
+		System.out.println("書き込み開始");
+		todoRepository.insertList(todos);
+		System.out.println("書き込み終了");
 	}
 }

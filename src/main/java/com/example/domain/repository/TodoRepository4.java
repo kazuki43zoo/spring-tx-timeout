@@ -14,4 +14,5 @@ public interface TodoRepository4 {
     Todo select(int id);
     // 全件取得
     List<Todo> selectAll();
+
 }
