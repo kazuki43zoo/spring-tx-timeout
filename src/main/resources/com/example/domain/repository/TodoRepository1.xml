@@ -16,16 +16,13 @@
 		SELECT id, title, details,
 		finished FROM todo
 	</select>
-	<update id="update">
-		UPDATE todo SET title = #{title} WHERE details =
-		#{details}
-	</update>
-	<insert id="insertList" parameterType="list" useGeneratedKeys="true"
-		keyProperty="id">
-		<foreach collection="list" item="todo" separator=";">
-			INSERT
-			INTO
-			todo (title, details, finished) VALUES (#{todo.title}, #{todo.details},
+	<insert id="insertList"
+		useGeneratedKeys="true" keyProperty="id">
+		INSERT
+		INTO
+		todo (title, details, finished) VALUES
+		<foreach collection="list" item="todo" separator=",">
+			(#{todo.title}, #{todo.details},
 			#{todo.finished})
 		</foreach>
 	</insert>

@@ -4,30 +4,43 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.example.domain.model.Todo;
 
 @Service
-@Transactional
 public class TodoServiceFacade2 {
 
 	@Autowired
 	TodoService1 todoService1;
 	@Autowired
-	TodoService5 todoService5;
+	TodoService3 todoService3;
+	@Autowired
+	TodoService4 todoService4;
 
-	public void insert(Todo todo) {
-		todoService1.insert(todo);
-		todoService1.update(todo);
-		todoService5.insert(todo);
+	@Autowired
+	@Qualifier(value = "setTransactionTemplateToFacade2")
+	TransactionTemplate transactionTemplate;
+
+	public Object insert(Todo todo) {
+		return transactionTemplate.execute(status -> {
+			System.out.println(TodoServiceFacade2.class.getName());
+			todoService1.insert(todo);
+			todoService3.insert(todo);
+			todoService4.insert(todo);
+			return null;
+		});
 	}
 
 	public List<List<Todo>> selectAll() {
-		ArrayList<List<Todo>> list = new ArrayList<>();
-		list.add(todoService1.selectAll());
-		list.add(todoService5.selectAll());
-		return list;
+		return transactionTemplate.execute(status -> {
+			ArrayList<List<Todo>> list = new ArrayList<>();
+			list.add(todoService1.selectAll());
+			list.add(todoService3.selectAll().get(0));
+			list.add(todoService4.selectAll().get(0));
+			return list;
+		});
 	}
 }

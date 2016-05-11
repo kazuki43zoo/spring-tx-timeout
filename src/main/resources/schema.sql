@@ -1,4 +1,4 @@
-CREATE TABLE todo (
+CREATE TABLE TODO (
     id IDENTITY
     ,title TEXT NOT NULL
     ,details TEXT

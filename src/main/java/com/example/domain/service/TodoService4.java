@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.domain.model.Todo;
 import com.example.domain.repository.TodoRepository1;
 import com.example.domain.repository.TodoRepository2;
-import com.example.domain.repository.TodoRepository4;
 
 @Service
 @Transactional(timeout = 10)

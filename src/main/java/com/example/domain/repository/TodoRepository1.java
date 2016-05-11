@@ -15,7 +15,5 @@ public interface TodoRepository1 {
     // 全件取得
     List<Todo> selectAll();
     
-    void update(Todo todo);
-    
     void insertList(List<Todo> todos);
 }

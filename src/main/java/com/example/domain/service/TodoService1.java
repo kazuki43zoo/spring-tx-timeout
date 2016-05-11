@@ -24,12 +24,7 @@ public class TodoService1 {
 		return todoRepository.selectAll();
 	}
 
-	public void update(Todo todo) {
-		for (int i = 0; i < Integer.MAX_VALUE; i++)
-			for (int j = 0; j < Integer.MAX_VALUE; j++)
-				todoRepository.update(todo);
-	}
-	@Transactional(timeout = 10)
+	@Transactional(timeout = 1)
 	public void insertList(List<Todo> todos) {
 		System.out.println("書き込み開始");
 		todoRepository.insertList(todos);

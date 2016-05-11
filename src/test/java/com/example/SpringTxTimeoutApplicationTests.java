@@ -6,17 +6,14 @@ import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.transaction.TransactionTimedOutException;
 import org.springframework.web.client.RestTemplate;
 
 import com.example.domain.model.Todo;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = SpringTxTimeoutApplication.class)
 @WebAppConfiguration
@@ -28,6 +25,8 @@ public class SpringTxTimeoutApplicationTests {
 	final static String URL4 = "http://localhost:7777/todo4";
 	final static String URL5 = "http://localhost:7777/facade1";
 	final static String URL6 = "http://localhost:7777/todo1/list";
+	final static String URL7 = "http://localhost:7777/facade2";
+	final static String URL8 = "http://localhost:7777/facade3";
 
 	/**
 	 * 普通の登録テスト
@@ -141,13 +140,15 @@ public class SpringTxTimeoutApplicationTests {
 		}
 	}
 
+	/**
+	 * クエリ実行中にタイムアウトした場合のテスト
+	 */
 	@Test
 	public void serviceFacadeQueryTimeout() {
 		RestTemplate restTemplate = new RestTemplate();
 		Todo todo = new Todo("Todo6", "詳細6");
 		List<Todo> todos = new ArrayList<>();
-
-		for (int i = 0; i < 10000; i++) {
+		for (int i = 0; i < 100000; i++) {
 			todos.add(todo);
 		}
 
@@ -155,15 +156,40 @@ public class SpringTxTimeoutApplicationTests {
 		System.out.println("リスト作成");
 		ResponseEntity entity = restTemplate.postForEntity(URL6, request, ResponseEntity.class);
 		System.out.println(entity.getStatusCode());
-
 		entity = restTemplate.getForEntity(URL6, List.class);
 		// StatusCodeの確認
 		System.out.println(entity.getStatusCode() + "" + HttpStatus.OK);
-		// 登録した内容の確認
-//		List<List<Todo>> list = (List<List<Todo>>) entity.getBody();
-//		for (List<Todo> todoList : list) {
-//			System.out.println(todoList.get(0));
-//		}
+	}
+	/**
+	 * TransactionTemplateを使ったタイムアウトのテスト1
+	 */
+	@Test
+	public void serviceFacadeTemplateTimeout1() {
+		RestTemplate restTemplate = new RestTemplate();
+		Todo todo = new Todo("Todo7", "詳細7");
+		HttpEntity<Todo> request = new HttpEntity<>(todo);
+		System.out.println("リスト作成");
+		ResponseEntity entity = restTemplate.postForEntity(URL7, request, ResponseEntity.class);
+		System.out.println(entity.getStatusCode());
+		entity = restTemplate.getForEntity(URL7, List.class);
+		// StatusCodeの確認
+		System.out.println(entity.getStatusCode() + "" + HttpStatus.OK);
+	}
+
+	/**
+	 * TransactionTemplateを使ったタイムアウトのテスト2
+	 */
+	@Test
+	public void serviceFacadeTemplateTimeout2() {
+		RestTemplate restTemplate = new RestTemplate();
+		Todo todo = new Todo("Todo8", "詳細8");
+		HttpEntity<Todo> request = new HttpEntity<>(todo);
+		System.out.println("リスト作成");
+		ResponseEntity entity = restTemplate.postForEntity(URL8, request, ResponseEntity.class);
+		System.out.println(entity.getStatusCode());
+		entity = restTemplate.getForEntity(URL8, List.class);
+		// StatusCodeの確認
+		System.out.println(entity.getStatusCode() + "" + HttpStatus.OK);
 	}
 
 }
